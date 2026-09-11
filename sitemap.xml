@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Only the main page is listed — the legal pages are intentionally marked
+     noindex (see their <meta name="robots"> tags) and are left out of the
+     sitemap so Google isn't sent mixed signals about what to index. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://www.mikey.markets/</loc>
+    <lastmod>2026-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

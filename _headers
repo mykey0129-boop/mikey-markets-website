@@ -1,0 +1,26 @@
+# Security headers for mikey.markets
+# This file follows Netlify's _headers format. If you deploy elsewhere
+# (Vercel, Cloudflare Pages, a VPS with nginx/Apache, GHL custom hosting),
+# translate these into that platform's equivalent config — a static
+# _headers file only works on hosts that read it natively.
+#
+# CSP origins below reflect what this site ACTUALLY loads today:
+#   - fonts.googleapis.com / fonts.gstatic.com  → Google Fonts
+#   - link.msgsndr.com                          → GoHighLevel embed helper script
+#   - links.levelupservices.cc                  → GoHighLevel booking widget (iframe)
+# If you add any new third-party script, font, or embed later, add its
+# origin here too — an out-of-date CSP either breaks the new feature or
+# (worse) gets left wide-open with 'unsafe-inline'/'unsafe-eval'.
+#
+# Known relaxation: style-src includes 'unsafe-inline' because this site
+# currently uses inline style="" attributes in a few places (mostly the
+# GHL iframe sizing). Moving those to CSS classes would let you drop
+# 'unsafe-inline' from style-src for a stricter policy — worth doing
+# before this is a high-traffic production site.
+
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://link.msgsndr.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-src https://links.levelupservices.cc; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self';

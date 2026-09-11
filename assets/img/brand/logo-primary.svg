@@ -1,0 +1,17 @@
+<svg viewBox="0 0 713.1 220" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(22.50,17.00)">
+<path d="M 12.40,142.60 L 43.40,27.90 L 77.50,93.00 L 111.60,27.90 L 142.60,142.60" fill="none" stroke="#1B1713" stroke-width="6.82" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 142.60,43.40 L 111.60,158.10 L 77.50,93.00 L 43.40,158.10 L 12.40,43.40" fill="none" stroke="#1B1713" stroke-width="6.82" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="12.40" cy="142.60" r="9.61" fill="#1B1713"/>
+<circle cx="43.40" cy="27.90" r="9.61" fill="#1B1713"/>
+<circle cx="111.60" cy="27.90" r="9.61" fill="#1B1713"/>
+<circle cx="142.60" cy="142.60" r="9.61" fill="#1B1713"/>
+<circle cx="142.60" cy="43.40" r="9.61" fill="none" stroke="#1B1713" stroke-width="4.23"/>
+<circle cx="111.60" cy="158.10" r="9.61" fill="none" stroke="#1B1713" stroke-width="4.23"/>
+<circle cx="43.40" cy="158.10" r="9.61" fill="none" stroke="#1B1713" stroke-width="4.23"/>
+<circle cx="12.40" cy="43.40" r="9.61" fill="none" stroke="#1B1713" stroke-width="4.23"/>
+<circle cx="77.50" cy="93.00" r="14.72" fill="#E2753D"/>
+</g>
+<text x="208.7" y="127.0" font-family="'Fraunces', 'Playfair Display', Georgia, 'Times New Roman', serif" font-size="58" fill="#1B1713">Mikey Markets</text>
+<circle cx="681.6" cy="110.0" r="7.5" fill="#E2753D"/>
+</svg>

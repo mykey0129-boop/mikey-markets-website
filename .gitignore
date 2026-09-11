@@ -1,0 +1,10 @@
+# OS junk
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Raw source folders — these were the original screenshot/asset dumps used to
+# build the curated files actually referenced by the site under assets/img/.
+# Not needed for deployment; keep them local only.
+GHL Automation Projects Assets/
+Mikey's Assets for Portfolio Website/
