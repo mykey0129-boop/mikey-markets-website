@@ -128,34 +128,48 @@
           <svg class="chart-svg" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flowchart: a new lead comes in, AI responds instantly, then either books a call or is added to a nurture sequence.">
             <!-- connectors -->
             <path d="M150,200 L170,200" class="chart-line"/>
-            <circle cx="160" cy="200" r="5" class="chart-pulse-dot"/>
             <path d="M360,200 L385,200" class="chart-line"/>
             <path d="M475,138 L475,75 L442,75" class="chart-line"/>
             <path d="M475,262 L475,330 L442,330" class="chart-line"/>
 
             <!-- start terminal -->
-            <ellipse cx="80" cy="200" rx="70" ry="34" class="chart-terminal"/>
+            <ellipse id="nodeStart" cx="80" cy="200" rx="70" ry="34" class="chart-terminal chart-node-pulse"/>
             <text x="80" y="208" class="chart-label chart-label-terminal">New Lead</text>
 
             <!-- process box -->
-            <rect x="170" y="150" width="190" height="100" rx="14" class="chart-box"/>
+            <rect id="nodeBox" x="170" y="150" width="190" height="100" rx="14" class="chart-box chart-node-pulse"/>
             <text x="265" y="193" class="chart-label">AI Responds</text>
             <text x="265" y="219" class="chart-label">Instantly</text>
 
             <!-- decision diamond -->
-            <polygon points="475,138 565,200 475,262 385,200" class="chart-diamond"/>
+            <polygon id="nodeDiamond" points="475,138 565,200 475,262 385,200" class="chart-diamond chart-node-pulse"/>
             <text x="475" y="193" class="chart-label">Ready to</text>
             <text x="475" y="219" class="chart-label">Book?</text>
 
             <!-- yes branch -->
-            <text x="452" y="102" class="chart-branch-label">YES</text>
-            <ellipse cx="520" cy="75" rx="78" ry="36" class="chart-terminal"/>
+            <ellipse id="nodeYes" cx="520" cy="75" rx="78" ry="36" class="chart-terminal chart-node-pulse"/>
             <text x="520" y="83" class="chart-label chart-label-terminal">Call Booked</text>
 
             <!-- no branch -->
-            <text x="452" y="312" class="chart-branch-label">NO</text>
-            <ellipse cx="520" cy="330" rx="78" ry="36" class="chart-terminal-alt"/>
+            <ellipse id="nodeNo" cx="520" cy="330" rx="78" ry="36" class="chart-terminal-alt chart-node-pulse"/>
             <text x="520" y="338" class="chart-label chart-label-terminal">Nurtured</text>
+
+            <!-- traveling signal: flows New Lead -> AI Responds -> Ready to Book?,
+                 then splits down both possible outcomes, looping continuously -->
+            <!-- one dot, one continuous journey: New Lead -> AI Responds -> the
+                 diamond -> Call Booked (YES) -> back through the diamond -> Nurtured
+                 (NO) -> loops back to the start -->
+            <circle r="5.5" class="chart-travel-dot">
+              <animateMotion dur="9.5s" repeatCount="indefinite" path="M150,200 L385,200 L475,138 L475,75 L442,75 L475,75 L475,138 L475,262 L475,330 L442,330"/>
+            </circle>
+
+            <!-- YES/NO branch labels painted last, on their own background chip,
+                 so they always sit fully visible on top of the lines and terminals
+                 near them instead of being partially painted over. -->
+            <rect x="425" y="84" width="54" height="26" rx="7" class="chart-branch-chip"/>
+            <text x="452" y="102" class="chart-branch-label">YES</text>
+            <rect x="425" y="294" width="54" height="26" rx="7" class="chart-branch-chip"/>
+            <text x="452" y="312" class="chart-branch-label">NO</text>
           </svg>
 
           <div class="flow-card-tools">
@@ -271,9 +285,9 @@
   <section class="section-pad" id="services">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Workflow Automation</p>
-        <h2>Automation strength, built into every stage of your funnel.</h2>
-        <p class="lede">Six pillars I build around — each one designed to remove a specific kind of manual work from your business.</p>
+        <p class="eyebrow">Services</p>
+        <h2>What I build for your business.</h2>
+        <p class="lede">Every service below exists for one reason: to remove a manual step from how you operate.</p>
       </div>
       <div class="service-grid">
         <article class="service-card reveal">
@@ -281,70 +295,49 @@
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><path d="M9 10h.01M12 10h.01M15 10h.01"/></svg>
           </span>
           <h3>Lead Capture &amp; Response</h3>
-          <p>Every form fill, DM, and missed call gets captured, qualified, and answered in seconds — not the next business day.</p>
+          <p>Every form fill, DM, and missed call — captured, qualified, and answered in seconds, not the next business day.</p>
         </article>
         <article class="service-card reveal">
           <span class="service-icon">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
           </span>
           <h3>CRM Build &amp; Migration</h3>
-          <p>GoHighLevel pipelines, automations, and dashboards mapped to how your business actually sells and delivers.</p>
+          <p>GoHighLevel pipelines and dashboards mapped to how your business actually sells and delivers.</p>
         </article>
         <article class="service-card reveal">
           <span class="service-icon">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M9 8V5a3 3 0 0 1 6 0v3"/><circle cx="9" cy="14" r="1"/><circle cx="15" cy="14" r="1"/></svg>
           </span>
           <h3>Conversation AI in GHL</h3>
-          <p>GoHighLevel's built-in Conversation AI, trained to answer FAQs, qualify leads, and book appointments automatically across SMS, web chat, and social DMs.</p>
-        </article>
-        <article class="service-card reveal">
-          <span class="service-icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg>
-          </span>
-          <h3>Bookkeeping &amp; Reporting</h3>
-          <p>Full-cycle bookkeeping in QuickBooks Online or Xero — reconciliations, job costing, and P&amp;L reporting, automated wherever possible.</p>
-        </article>
-        <article class="service-card reveal">
-          <span class="service-icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L11 3.83A2 2 0 0 0 9.59 3.24L4 3a1 1 0 0 0-1 1l.24 5.59a2 2 0 0 0 .59 1.41l9.58 9.58a2 2 0 0 0 2.83 0l4.35-4.35a2 2 0 0 0 0-2.82z"/><circle cx="8.5" cy="8.5" r="1.25" fill="currentColor" stroke="none"/></svg>
-          </span>
-          <h3>File &amp; Folder Naming Systems</h3>
-          <p>Clean, consistent naming conventions across files, folders, and assets — so your systems stay easy to navigate as they scale.</p>
+          <p>AI trained to answer FAQs, qualify leads, and book calls automatically — SMS, web chat, and social DMs.</p>
         </article>
         <article class="service-card reveal">
           <span class="service-icon">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><circle cx="15.5" cy="8.5" r="2" fill="currentColor" stroke="none"/></svg>
           </span>
           <h3>Chat Widget Setup</h3>
-          <p>GoHighLevel web chat widgets installed and styled to match your brand, connected straight into your pipeline and inbox.</p>
+          <p>Web chat widgets installed and styled to your brand, wired straight into your pipeline.</p>
+        </article>
+        <article class="service-card reveal">
+          <span class="service-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg>
+          </span>
+          <h3>Bookkeeping &amp; Reporting</h3>
+          <p>Full-cycle bookkeeping in QuickBooks or Xero — reconciliations, job costing, and reporting, automated wherever possible.</p>
+        </article>
+        <article class="service-card reveal">
+          <span class="service-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L11 3.83A2 2 0 0 0 9.59 3.24L4 3a1 1 0 0 0-1 1l.24 5.59a2 2 0 0 0 .59 1.41l9.58 9.58a2 2 0 0 0 2.83 0l4.35-4.35a2 2 0 0 0 0-2.82z"/><circle cx="8.5" cy="8.5" r="1.25" fill="currentColor" stroke="none"/></svg>
+          </span>
+          <h3>File &amp; Folder Naming Systems</h3>
+          <p>Consistent naming conventions across files and folders, so your systems stay easy to navigate at scale.</p>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- ============ CALENDAR CTA #1 ============ -->
-  <section class="section-pad alt-band" id="book">
-    <div class="container">
-      <div class="calendar-cta reveal">
-        <div>
-          <p class="eyebrow">See It In Motion</p>
-          <h2>Let's talk about what's still being done by hand.</h2>
-          <p>A free 20-minute discovery call — we map your current process, find where automation pays for itself fastest, and you leave with a plan whether you hire me or not.</p>
-          <a href="#book-final" class="btn btn-primary">Check My Availability</a>
-        </div>
-        <div class="calendar-embed">
-          <div class="calendar-embed-head">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><circle cx="8" cy="15" r="1.2" fill="var(--accent-dark)" stroke="none"/></svg>
-            Pick a time
-          </div>
-          <iframe data-src="https://links.levelupservices.cc/widget/bookings/contact-mikey-markets" style="width:100%;height:660px;border:none;" scrolling="no" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" id="ghl-booking-1" title="Book a discovery call with Mikey Markets"></iframe>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ============ CASE STUDIES ============ -->
-  <section class="section-pad" id="work">
+  <section class="section-pad alt-band" id="work">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow">Real Systems, Real Businesses</p>
@@ -356,7 +349,7 @@
   </section>
 
   <!-- ============ MORE AUTOMATIONS ============ -->
-  <section class="section-pad alt-band" id="more-work">
+  <section class="section-pad" id="more-work">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow">More Builds In The Wild</p>
@@ -368,7 +361,7 @@
   </section>
 
   <!-- ============ RESULTS ============ -->
-  <section class="section-pad" id="results">
+  <section class="section-pad alt-band" id="results">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow">Real Results, Real Impact</p>
@@ -379,7 +372,7 @@
   </section>
 
   <!-- ============ ROI CALCULATOR ============ -->
-  <section class="section-pad alt-band" id="roi">
+  <section class="section-pad" id="roi">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow">Lead Response ROI Calculator</p>
@@ -426,7 +419,7 @@
   </section>
 
   <!-- ============ PROCESS MAPS ============ -->
-  <section class="section-pad" id="process-maps">
+  <section class="section-pad alt-band" id="process-maps">
     <div class="container">
       <div class="process-cta reveal">
         <div class="process-cta-text">
@@ -449,7 +442,7 @@
   </section>
 
   <!-- ============ LOOM VIDEO ============ -->
-  <section class="section-pad alt-band" id="loom">
+  <section class="section-pad" id="loom">
     <div class="container">
       <div class="section-head center">
         <p class="eyebrow" style="justify-content:center;">Watch The Walkthrough</p>
@@ -471,7 +464,7 @@
   </section>
 
   <!-- ============ TESTIMONIALS ============ -->
-  <section class="section-pad" id="testimonials">
+  <section class="section-pad alt-band" id="testimonials">
     <div class="container">
       <div class="section-head center">
         <p class="eyebrow" style="justify-content:center;">Results Speak Louder Than Self-Promotion</p>
@@ -482,7 +475,7 @@
   </section>
 
   <!-- ============ FAQ + CONTACT ============ -->
-  <section class="section-pad alt-band" id="faq">
+  <section class="section-pad" id="faq">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow">Got A Question?</p>
@@ -551,7 +544,7 @@
   </section>
 
   <!-- ============ CALENDAR CTA #2 (final) ============ -->
-  <section class="section-pad" id="book-final">
+  <section class="section-pad alt-band" id="book-final">
     <div class="container">
       <div class="calendar-cta reveal">
         <div>

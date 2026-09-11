@@ -213,6 +213,7 @@ p{ margin: 0 0 var(--space-4); color: var(--ink-soft); }
 @media (min-width: 960px){
   .hero-grid{ grid-template-columns: 1.05fr 0.95fr; gap: var(--space-9); }
   .hero .hero-grid{ grid-template-columns: 1fr 1.15fr; gap: var(--space-8); }
+  #about .hero-grid{ grid-template-columns: 0.8fr 1.2fr; gap: var(--space-8); }
 }
 .hero h1{ margin-bottom: var(--space-5); }
 .hero h1 em{ font-style: italic; color: var(--accent-dark); }
@@ -230,7 +231,7 @@ p{ margin: 0 0 var(--space-4); color: var(--ink-soft); }
 .hero-visual{ position: relative; display: flex; justify-content: center; }
 .hero-photo-card{
   position: relative;
-  width: min(360px, 100%);
+  width: min(440px, 100%);
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
@@ -266,7 +267,9 @@ p{ margin: 0 0 var(--space-4); color: var(--ink-soft); }
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--line);
   padding: var(--space-6) var(--space-5) var(--space-5);
-  transform: rotate(1deg);
+  /* No rotate/transform here on purpose: a tilted element often gets promoted
+     to its own rasterized compositing layer by the browser, which is the
+     usual cause of a vector graphic suddenly looking soft or jagged. */
 }
 .flow-card-label{
   display: inline-flex;
@@ -286,14 +289,14 @@ p{ margin: 0 0 var(--space-4); color: var(--ink-soft); }
   width: 8px; height: 8px; border-radius: 50%;
   background: var(--accent);
   box-shadow: 0 0 0 0 rgba(226,117,61,0.6);
-  animation: flowPulse 1.8s ease-out infinite;
+  animation: flowPulse 3.5s ease-out infinite;
 }
 @keyframes flowPulse{
   0%{ box-shadow: 0 0 0 0 rgba(226,117,61,0.55); }
   100%{ box-shadow: 0 0 0 8px rgba(226,117,61,0); }
 }
 
-.chart-svg{ width: 100%; height: auto; display: block; }
+.chart-svg{ width: 100%; height: auto; display: block; shape-rendering: geometricPrecision; text-rendering: optimizeLegibility; }
 .chart-box, .chart-diamond{
   fill: var(--accent-tint);
   stroke: var(--ink);
@@ -310,6 +313,11 @@ p{ margin: 0 0 var(--space-4); color: var(--ink-soft); }
   text-anchor: middle;
 }
 .chart-label-terminal{ fill: #fff; }
+.chart-branch-chip{
+  fill: var(--surface-2);
+  stroke: var(--accent-safe);
+  stroke-width: 1.5;
+}
 .chart-branch-label{
   font-family: var(--font-body);
   font-size: 17px;
@@ -318,15 +326,28 @@ p{ margin: 0 0 var(--space-4); color: var(--ink-soft); }
   fill: var(--accent-safe);
   text-anchor: middle;
 }
-.chart-pulse-dot{
-  fill: var(--accent);
+.chart-travel-dot{ fill: var(--accent); }
+
+.chart-node-pulse{
   transform-box: fill-box;
   transform-origin: center;
-  animation: chartDot 1.6s ease-in-out infinite;
+  animation: chartNodePulse 9.5s ease-in-out infinite;
 }
-@keyframes chartDot{
-  0%, 100%{ opacity: 0.4; transform: scale(1); }
-  50%{ opacity: 1; transform: scale(1.6); }
+@keyframes chartNodePulse{
+  0%, 100%{ transform: scale(1); }
+  8%{ transform: scale(1.035); }
+  20%{ transform: scale(1); }
+}
+#nodeStart{ animation-delay: 0s; }
+#nodeBox{ animation-delay: 1.4s; }
+#nodeDiamond{ animation-delay: 4.3s; }
+#nodeYes{ animation-delay: 5.5s; }
+#nodeNo{ animation-delay: 9s; }
+
+/* SMIL (<animateMotion>) isn't covered by the global animation-duration
+   override above, so the traveling dots need their own reduced-motion rule. */
+@media (prefers-reduced-motion: reduce){
+  .chart-travel-dot{ display: none; }
 }
 
 .flow-card-tools{
@@ -335,7 +356,6 @@ p{ margin: 0 0 var(--space-4); color: var(--ink-soft); }
   padding-top: var(--space-5);
   border-top: 1px solid var(--line);
 }
-@media (max-width: 480px){ .flow-card{ transform: none; } }
 
 /* ---------- Certifications ---------- */
 .cert-strip{ text-align: center; }
