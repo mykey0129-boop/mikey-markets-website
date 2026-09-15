@@ -155,6 +155,67 @@
   }
 
   /* ============================================================
+     Video reviews — client video testimonials, lazy-loaded and
+     autoplayed (muted) once each card scrolls into view.
+     ============================================================ */
+  const videoReviews = [
+    { file: "vatrice-chestnut.mp4", name: "Vatrice Chestnut", role: "Client video review" }
+  ];
+
+  const videoReviewGrid = document.getElementById("videoReviewGrid");
+  if (videoReviewGrid) {
+    videoReviewGrid.innerHTML = videoReviews.map((v, i) => `
+      <div class="video-review-card reveal" id="videoReview${i}">
+        <video muted loop playsinline preload="none" data-src="assets/video/reviews/${v.file}" aria-label="Video review from ${v.name}"></video>
+        <button class="video-review-mute" type="button" aria-pressed="false" aria-label="Unmute video review from ${v.name}">
+          <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M23 9l-6 6M17 9l6 6"/></svg>
+          <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+        </button>
+        <div class="video-review-caption">
+          <strong>${v.name}</strong>
+          <span>${v.role}</span>
+        </div>
+      </div>
+    `).join("");
+
+    // Lazy-load: the real video src loads only once a card nears the
+    // viewport, so off-screen reviews never cost bandwidth up front.
+    const videoCards = videoReviewGrid.querySelectorAll(".video-review-card");
+    if ("IntersectionObserver" in window) {
+      const videoIO = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const vid = entry.target.querySelector("video");
+          if (!vid) return;
+          if (entry.isIntersecting) {
+            if (!vid.src) vid.src = vid.dataset.src;
+            vid.play().catch(() => {}); // autoplay can still be blocked by browser policy; fails silently
+          } else {
+            vid.pause();
+          }
+        });
+      }, { threshold: 0.5 });
+      videoCards.forEach(card => videoIO.observe(card));
+    } else {
+      videoCards.forEach(card => {
+        const vid = card.querySelector("video");
+        if (vid) { vid.src = vid.dataset.src; vid.play().catch(() => {}); }
+      });
+    }
+
+    videoReviewGrid.addEventListener("click", (e) => {
+      const btn = e.target.closest(".video-review-mute");
+      if (!btn) return;
+      const card = btn.closest(".video-review-card");
+      const vid = card.querySelector("video");
+      vid.muted = !vid.muted;
+      const isUnmuted = !vid.muted;
+      card.classList.toggle("is-unmuted", isUnmuted);
+      btn.setAttribute("aria-pressed", String(isUnmuted));
+      btn.setAttribute("aria-label", `${isUnmuted ? "Mute" : "Unmute"} video review from ${videoReviews[[...videoCards].indexOf(card)].name}`);
+    });
+  }
+
+  /* ============================================================
      Render: Case study cards
      ============================================================ */
   const caseGrid = document.getElementById("caseGrid");
