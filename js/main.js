@@ -58,8 +58,8 @@
       subhead: "A sensitive, multi-branch intake flow that routes warm leads to assessment, tracks show/no-show outcomes, and nurtures ongoing care without feeling automated.",
       problem: "Intake coordinators were manually tracking who showed up for assessments, who needed a warm follow-up, and who was ready for discharge — a process too easy to lose in a spreadsheet.",
       solution: "Built New Intake → Warm Lead Trigger → Scheduled → Assessment (Show / No-Show branch) → Ongoing Therapy → Discharge, with nurture emails and reply-triggered support routing.",
-      cardImage: "process-map.jpg",
-      images: ["process-map.jpg", "step-1.jpg", "step-2.jpg", "step-3.jpg", "step-4.jpg", "step-5.jpg", "step-6.jpg"],
+      cardImage: "site-desktop.jpg",
+      images: ["site-desktop.jpg", "site-content.jpg", "site-mobile.jpg", "site-desktop-dark.jpg", "site-mobile-dark.jpg", "process-map.jpg", "step-1.jpg", "step-2.jpg", "step-3.jpg", "step-4.jpg", "step-5.jpg", "step-6.jpg"],
       challenge: "Show/no-show tracking and discharge status lived in a spreadsheet that was easy to lose track of.",
       solution_short: "A branching pipeline that tracks every client's status automatically, without losing the human touch."
     },
