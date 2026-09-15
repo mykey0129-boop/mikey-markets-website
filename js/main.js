@@ -16,7 +16,8 @@
       subhead: "A GoHighLevel pipeline that takes a walk-in booking request from first click to loyal repeat customer without a single manual follow-up.",
       problem: "Bookings were coming in through DMs, phone calls, and a booking widget with no shared pipeline — appointments were double-booked, confirmations were sent manually, and no-shows were never followed up.",
       solution: "Built a single pipeline covering New Appointment Request → Booking Confirmation → Service In Progress → Service Completed, with automated SMS/email confirmations and stage-based triggers at every step.",
-      images: ["process-map.jpg", "step-1.jpg", "step-2.jpg", "step-3.jpg", "step-4.jpg"],
+      cardImage: "site-desktop.jpg",
+      images: ["site-desktop.jpg", "site-content.jpg", "site-mobile.jpg", "site-desktop-dark.jpg", "site-mobile-dark.jpg", "process-map.jpg", "step-1.jpg", "step-2.jpg", "step-3.jpg", "step-4.jpg"],
       challenge: "Bookings scattered across DMs, calls, and a widget led to double-bookings and silent no-shows.",
       solution_short: "One pipeline, automated confirmations, and a completed-service follow-up that brings clients back."
     },
@@ -29,7 +30,8 @@
       subhead: "From the first form submission to a completed job and a membership upsell, every stage of the service call moves itself forward.",
       problem: "Dispatch and follow-up lived in a technician's head and a paper board — jobs slipped through the cracks and repeat-service reminders never went out.",
       solution: "Mapped and automated Form Submitted → Appointment Scheduled → Work In Progress → Job Completed → Follow-Up & Membership Promo, so every job has a visible stage and a scheduled next touch.",
-      images: ["process-map.jpg", "step-1.jpg", "step-2.jpg", "step-3.jpg", "step-4.jpg", "step-5.jpg"],
+      cardImage: "site-desktop.jpg",
+      images: ["site-desktop.jpg", "site-content.jpg", "site-mobile.jpg", "process-map.jpg", "step-1.jpg", "step-2.jpg", "step-3.jpg", "step-4.jpg", "step-5.jpg"],
       challenge: "Jobs tracked in someone's head meant missed follow-ups and no repeat-service reminders.",
       solution_short: "A five-stage pipeline that self-advances and automatically pitches membership renewals."
     },
@@ -42,7 +44,8 @@
       subhead: "A quoting and scheduling flow that keeps leads warm, chases stale opportunities automatically, and recovers cancellations instead of losing the job.",
       problem: "Quotes went cold because no one followed up, and cancelled jobs simply disappeared from the pipeline instead of being rebooked.",
       solution: "Built New Inquiry → Quote Sent → Trigger Link Clicked → Service Scheduled → Cancellation Handling → Completed & Follow-Up, plus global automations for stale-opportunity nurture and do-not-disturb compliance.",
-      images: ["process-map.jpg", "step-1.jpg", "step-2.jpg", "step-3.jpg", "step-4.jpg", "step-5.jpg", "step-6.jpg"],
+      cardImage: "site-desktop.jpg",
+      images: ["site-desktop.jpg", "site-content.jpg", "site-mobile.jpg", "site-desktop-dark.jpg", "site-mobile-dark.jpg", "process-map.jpg", "step-1.jpg", "step-2.jpg", "step-3.jpg", "step-4.jpg", "step-5.jpg", "step-6.jpg"],
       challenge: "Cold quotes and disappearing cancellations meant paid-for leads went to waste.",
       solution_short: "Automatic stale-opportunity nurture recovers quotes and cancellations before they're lost for good."
     },
@@ -55,6 +58,7 @@
       subhead: "A sensitive, multi-branch intake flow that routes warm leads to assessment, tracks show/no-show outcomes, and nurtures ongoing care without feeling automated.",
       problem: "Intake coordinators were manually tracking who showed up for assessments, who needed a warm follow-up, and who was ready for discharge — a process too easy to lose in a spreadsheet.",
       solution: "Built New Intake → Warm Lead Trigger → Scheduled → Assessment (Show / No-Show branch) → Ongoing Therapy → Discharge, with nurture emails and reply-triggered support routing.",
+      cardImage: "process-map.jpg",
       images: ["process-map.jpg", "step-1.jpg", "step-2.jpg", "step-3.jpg", "step-4.jpg", "step-5.jpg", "step-6.jpg"],
       challenge: "Show/no-show tracking and discharge status lived in a spreadsheet that was easy to lose track of.",
       solution_short: "A branching pipeline that tracks every client's status automatically, without losing the human touch."
@@ -68,13 +72,32 @@
       subhead: "A pre-qualification and treatment pipeline that filters serious consultations from tire-kickers and keeps clients coming back long after treatment.",
       problem: "Every lead was treated the same regardless of budget or intent, and there was no system for post-treatment nurture or long-term membership follow-up.",
       solution: "Built New Lead → Pre-Qualification Review → Consultation Scheduled → Confirmation & Reminder → Treatment In Progress → Post-Care & Nurture → Long-Term Membership Follow-Up.",
-      images: ["process-map.jpg", "step-1.jpg", "step-2.jpg", "step-3.jpg", "step-4.jpg", "step-5.jpg", "step-6.jpg"],
+      cardImage: "site-desktop.jpg",
+      images: ["site-desktop.jpg", "site-content.jpg", "site-mobile.jpg", "process-map.jpg", "step-1.jpg", "step-2.jpg", "step-3.jpg", "step-4.jpg", "step-5.jpg", "step-6.jpg"],
       challenge: "No pre-qualification meant time spent on unqualified leads, and no system for post-treatment nurture.",
       solution_short: "A qualify-first pipeline with automated post-care nurture that turns one treatment into a member."
     }
   ];
 
   const imgPath = (slug, file) => `assets/img/case-studies/${slug}/${file}`;
+
+  // Human-readable labels for each gallery image, keyed by filename — used for
+  // alt text and captions so the site-preview shots and automation screenshots
+  // both read clearly regardless of where they fall in the images array.
+  const imageLabels = {
+    "site-desktop.jpg": "Live site — desktop",
+    "site-desktop-dark.jpg": "Live site — desktop, dark mode",
+    "site-content.jpg": "Live site — page content",
+    "site-mobile.jpg": "Live site — mobile",
+    "site-mobile-dark.jpg": "Live site — mobile, dark mode",
+    "process-map.jpg": "Automation process map"
+  };
+  function labelForImage(file) {
+    if (imageLabels[file]) return imageLabels[file];
+    const stepMatch = file.match(/^step-(\d+)\.jpg$/);
+    if (stepMatch) return `Automation step ${stepMatch[1]}`;
+    return file;
+  }
 
   /* ============================================================
      Smaller automation builds — pulled from mikey.markets, mapped
@@ -139,7 +162,7 @@
     caseGrid.innerHTML = caseStudies.map(cs => `
       <button class="case-card reveal" type="button" data-case="${cs.slug}" aria-haspopup="dialog">
         <div class="case-thumb">
-          <img src="${imgPath(cs.slug, "process-map.jpg")}" alt="Process map for ${cs.tag} automation build" loading="lazy">
+          <img src="${imgPath(cs.slug, cs.cardImage)}" alt="${cs.tag} website preview" loading="lazy">
         </div>
         <div class="case-body">
           <span class="case-tag">${cs.tag}</span>
@@ -285,7 +308,7 @@
 
     const img = activeCase.images[activeImageIndex];
     caseModalMainImg.src = imgPath(activeCase.slug, img);
-    caseModalMainImg.alt = `${activeCase.tag} — image ${activeImageIndex + 1} of ${total}`;
+    caseModalMainImg.alt = `${activeCase.tag} — ${labelForImage(img)} (image ${activeImageIndex + 1} of ${total})`;
 
     caseModalThumbs.querySelectorAll("img").forEach((t, i) => {
       t.classList.toggle("active", i === activeImageIndex);
@@ -307,8 +330,8 @@
     caseModalProblem.textContent = cs.problem;
     caseModalSolution.textContent = cs.solution;
 
-    caseModalThumbs.innerHTML = cs.images.map((img, i) => `
-      <img src="${imgPath(cs.slug, img)}" alt="${cs.tag} — ${i === 0 ? "process map" : "step " + i}" data-src="${imgPath(cs.slug, img)}">
+    caseModalThumbs.innerHTML = cs.images.map((img) => `
+      <img src="${imgPath(cs.slug, img)}" alt="${cs.tag} — ${labelForImage(img)}" data-src="${imgPath(cs.slug, img)}">
     `).join("");
 
     caseModalThumbs.querySelectorAll("img").forEach((thumb, i) => {
