@@ -162,7 +162,7 @@
      autoplayed (muted) once each card scrolls into view.
      ============================================================ */
   const videoReviews = [
-    { file: "vatrice-chestnut.mp4", name: "Vatrice Chestnut", role: "Client video review" }
+    { file: "vatrice-chestnut.mp4", name: "Vatrice Chestnut", role: "CEO, 10x Consulting & 10x Navigator · Washington, DC" }
   ];
 
   const VIDEO_REVIEW_DEFAULT_VOLUME = 0.25; // low starting volume once a visitor unmutes
