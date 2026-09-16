@@ -138,9 +138,9 @@
      Testimonials — real client quotes from mikey.markets
      ============================================================ */
   const testimonials = [
-    { quote: "As a QuickBooks Online Certified ProAdvisor, he demonstrated exceptional proficiency in managing financial reports and cash flows.", name: "Fhey (Mariefe) Raya-Dohrenwendt", role: "Accountant / Executive Assistant" },
-    { quote: "He consistently sets clear expectations and goals for team members while providing necessary support and guidance to succeed.", name: "Khrizza Mae Briton", role: "Full-Cycle Bookkeeping · Process Optimization" },
-    { quote: "His dedication and expertise in bookkeeping and VA services make him an excellent choice for any organization seeking a skilled professional.", name: "Lloyd Angelo Castillejos, CPA", role: "Remote Bookkeeper · QBO/Xero Certified" }
+    { quote: "As a QuickBooks Online Certified ProAdvisor, he demonstrated exceptional proficiency in managing financial reports and cash flows.", name: "Fhey (Mariefe) Raya-Dohrenwendt", role: "Accountant / Executive Assistant", photo: "assets/img/testimonials/fhey-raya-dohrenwendt.jpg" },
+    { quote: "He consistently sets clear expectations and goals for team members while providing necessary support and guidance to succeed.", name: "Khrizza Mae Briton", role: "Full-Cycle Bookkeeping · Process Optimization", photo: "assets/img/testimonials/khrizza-mae-briton.jpg" },
+    { quote: "His dedication and expertise in bookkeeping and VA services make him an excellent choice for any organization seeking a skilled professional.", name: "Lloyd Angelo Castillejos, CPA", role: "Remote Bookkeeper · QBO/Xero Certified", photo: "assets/img/testimonials/lloyd-castillejos.jpg" }
   ];
 
   const testimonialsGrid = document.getElementById("testimonialsGrid");
@@ -149,7 +149,10 @@
       <figure class="testimonial-card reveal">
         <svg class="quote-mark" width="30" height="24" viewBox="0 0 30 24" fill="none"><path d="M12.6 0C6.6 3.2 3.4 8 3.4 13.6c0 5.2 3 8.8 7.4 9.8l1.6-3.4c-2.8-.8-4.4-2.6-4.4-5.4 0-.6.2-1 .4-1.4h4.2V0h-.02zm16.6 0c-6 3.2-9.2 8-9.2 13.6 0 5.2 3 8.8 7.4 9.8l1.6-3.4c-2.8-.8-4.4-2.6-4.4-5.4 0-.6.2-1 .4-1.4h4.2V0h-.02z" fill="#E2753D"/></svg>
         <blockquote>${t.quote}</blockquote>
-        <figcaption><strong>${t.name}</strong><span>${t.role}</span></figcaption>
+        <figcaption>
+          <img class="testimonial-avatar" src="${t.photo}" alt="${t.name}" loading="lazy">
+          <span class="testimonial-figcaption-text"><strong>${t.name}</strong><span>${t.role}</span></span>
+        </figcaption>
       </figure>
     `).join("");
   }
@@ -162,15 +165,24 @@
     { file: "vatrice-chestnut.mp4", name: "Vatrice Chestnut", role: "Client video review" }
   ];
 
+  const VIDEO_REVIEW_DEFAULT_VOLUME = 0.25; // low starting volume once a visitor unmutes
+
   const videoReviewGrid = document.getElementById("videoReviewGrid");
   if (videoReviewGrid) {
     videoReviewGrid.innerHTML = videoReviews.map((v, i) => `
       <div class="video-review-card reveal" id="videoReview${i}">
-        <video muted loop playsinline preload="none" data-src="assets/video/reviews/${v.file}" aria-label="Video review from ${v.name}"></video>
+        <video muted playsinline preload="none" data-src="assets/video/reviews/${v.file}" aria-label="Video review from ${v.name}"></video>
+        <button class="video-review-playpause" type="button" aria-pressed="true" aria-label="Pause video review from ${v.name}">
+          <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
         <button class="video-review-mute" type="button" aria-pressed="false" aria-label="Unmute video review from ${v.name}">
           <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M23 9l-6 6M17 9l6 6"/></svg>
           <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
         </button>
+        <div class="video-review-volume-wrap">
+          <input type="range" class="video-review-volume" min="0" max="1" step="0.05" value="${VIDEO_REVIEW_DEFAULT_VOLUME}" aria-label="Volume for video review from ${v.name}">
+        </div>
         <div class="video-review-caption">
           <strong>${v.name}</strong>
           <span>${v.role}</span>
@@ -178,19 +190,69 @@
       </div>
     `).join("");
 
+    const videoCards = videoReviewGrid.querySelectorAll(".video-review-card");
+
+    function reviewName(card) {
+      return videoReviews[[...videoCards].indexOf(card)].name;
+    }
+
+    function setUnmutedState(card, vid, isUnmuted) {
+      const btn = card.querySelector(".video-review-mute");
+      vid.muted = !isUnmuted;
+      card.classList.toggle("is-unmuted", isUnmuted);
+      btn.setAttribute("aria-pressed", String(isUnmuted));
+      btn.setAttribute("aria-label", `${isUnmuted ? "Mute" : "Unmute"} video review from ${reviewName(card)}`);
+    }
+
+    // Keeps the play/pause button in sync no matter what paused the video —
+    // a manual click, scrolling off-screen, or simply reaching the end.
+    function syncPlayButton(card, vid) {
+      const btn = card.querySelector(".video-review-playpause");
+      const isPlaying = !vid.paused && !vid.ended;
+      card.classList.toggle("is-playing", isPlaying);
+      btn.setAttribute("aria-pressed", String(isPlaying));
+      btn.setAttribute("aria-label", `${isPlaying ? "Pause" : "Play"} video review from ${reviewName(card)}`);
+    }
+
+    function toggleUserPlayback(vid) {
+      if (vid.paused) {
+        vid.dataset.userPaused = "";
+        if (vid.ended) vid.currentTime = 0; // clicking play after it finishes replays from the start
+        vid.play().catch(() => {});
+      } else {
+        vid.dataset.userPaused = "true";
+        vid.pause();
+      }
+    }
+
+    videoCards.forEach(card => {
+      const vid = card.querySelector("video");
+      if (!vid) return;
+      vid.volume = VIDEO_REVIEW_DEFAULT_VOLUME;
+      vid.addEventListener("play", () => syncPlayButton(card, vid));
+      vid.addEventListener("pause", () => syncPlayButton(card, vid));
+      vid.addEventListener("ended", () => syncPlayButton(card, vid)); // no loop: it just stops here
+      vid.addEventListener("click", () => toggleUserPlayback(vid));
+    });
+
     // Lazy-load: the real video src loads only once a card nears the
     // viewport, so off-screen reviews never cost bandwidth up front.
-    const videoCards = videoReviewGrid.querySelectorAll(".video-review-card");
+    // Once a visitor has manually paused a video (or it's played through
+    // to the end), scrolling it back into view should not force it to
+    // resume — only the very first entrance autoplays.
     if ("IntersectionObserver" in window) {
       const videoIO = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           const vid = entry.target.querySelector("video");
           if (!vid) return;
           if (entry.isIntersecting) {
-            if (!vid.src) vid.src = vid.dataset.src;
-            vid.play().catch(() => {}); // autoplay can still be blocked by browser policy; fails silently
-          } else {
-            vid.pause();
+            const isFirstEntrance = !vid.src;
+            if (isFirstEntrance) vid.src = vid.dataset.src;
+            if ((isFirstEntrance || !vid.dataset.userPaused) && !vid.ended) {
+              vid.play().catch(() => {}); // autoplay can still be blocked by browser policy; fails silently
+            }
+          } else if (!vid.paused) {
+            vid.pause(); // an automatic pause, not a user one — resumes on scroll back in
           }
         });
       }, { threshold: 0.5 });
@@ -203,15 +265,33 @@
     }
 
     videoReviewGrid.addEventListener("click", (e) => {
-      const btn = e.target.closest(".video-review-mute");
-      if (!btn) return;
-      const card = btn.closest(".video-review-card");
+      const playBtn = e.target.closest(".video-review-playpause");
+      if (playBtn) {
+        const card = playBtn.closest(".video-review-card");
+        toggleUserPlayback(card.querySelector("video"));
+        return;
+      }
+
+      const muteBtn = e.target.closest(".video-review-mute");
+      if (muteBtn) {
+        const card = muteBtn.closest(".video-review-card");
+        const vid = card.querySelector("video");
+        const slider = card.querySelector(".video-review-volume");
+        const willUnmute = vid.muted;
+        if (willUnmute && vid.volume === 0) vid.volume = VIDEO_REVIEW_DEFAULT_VOLUME;
+        if (slider) slider.value = vid.volume;
+        setUnmutedState(card, vid, willUnmute);
+      }
+    });
+
+    videoReviewGrid.addEventListener("input", (e) => {
+      const slider = e.target.closest(".video-review-volume");
+      if (!slider) return;
+      const card = slider.closest(".video-review-card");
       const vid = card.querySelector("video");
-      vid.muted = !vid.muted;
-      const isUnmuted = !vid.muted;
-      card.classList.toggle("is-unmuted", isUnmuted);
-      btn.setAttribute("aria-pressed", String(isUnmuted));
-      btn.setAttribute("aria-label", `${isUnmuted ? "Mute" : "Unmute"} video review from ${videoReviews[[...videoCards].indexOf(card)].name}`);
+      const value = Number(slider.value);
+      vid.volume = value;
+      setUnmutedState(card, vid, value > 0);
     });
   }
 
