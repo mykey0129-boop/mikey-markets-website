@@ -359,28 +359,29 @@ p{ margin: 0 0 var(--space-4); color: var(--ink-soft); }
 
 /* ---------- Certifications ---------- */
 .cert-strip{ text-align: center; }
-.cert-strip .section-head{ margin-inline: auto; margin-bottom: var(--space-6); }
+.cert-strip .section-head{ margin-inline: auto; margin-bottom: var(--space-5); }
 .cert-row{
-  display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-5);
+  display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-3);
 }
 .cert-badge{
-  display: flex; align-items: center; gap: var(--space-3);
+  display: flex; align-items: center; gap: var(--space-2);
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  padding: var(--space-4) var(--space-5);
-  min-width: 220px;
+  padding: var(--space-3) var(--space-4);
+  min-width: 180px;
   text-align: left;
   box-shadow: var(--shadow-sm);
 }
 .cert-badge .icon-wrap{
-  width: 44px; height: 44px; border-radius: 50%;
+  width: 34px; height: 34px; border-radius: 50%;
   background: var(--accent-tint); color: var(--accent-dark);
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
-.cert-badge strong{ display: block; font-size: 0.95rem; }
-.cert-badge span{ font-size: 0.82rem; color: var(--ink-faint); }
-.cert-note{ margin-top: var(--space-5); font-size: 0.85rem; color: var(--ink-faint); }
+.cert-badge .icon-wrap svg{ width: 16px; height: 16px; }
+.cert-badge strong{ display: block; font-size: 0.82rem; }
+.cert-badge span{ font-size: 0.72rem; color: var(--ink-faint); }
+.cert-note{ margin-top: var(--space-4); font-size: 0.78rem; color: var(--ink-faint); }
 
 /* ---------- Marquee ---------- */
 .marquee-wrap{
