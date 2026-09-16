@@ -172,10 +172,6 @@
     videoReviewGrid.innerHTML = videoReviews.map((v, i) => `
       <div class="video-review-card reveal" id="videoReview${i}">
         <video muted playsinline preload="none" data-src="assets/video/reviews/${v.file}" aria-label="Video review from ${v.name}"></video>
-        <button class="video-review-playpause" type="button" aria-pressed="true" aria-label="Pause video review from ${v.name}">
-          <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-          <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </button>
         <button class="video-review-mute" type="button" aria-pressed="false" aria-label="Unmute video review from ${v.name}">
           <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M23 9l-6 6M17 9l6 6"/></svg>
           <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
@@ -186,6 +182,15 @@
         <div class="video-review-caption">
           <strong>${v.name}</strong>
           <span>${v.role}</span>
+        </div>
+        <div class="video-review-controls">
+          <button class="video-review-playpause" type="button" aria-pressed="true" aria-label="Pause video review from ${v.name}">
+            <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+            <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <span class="video-review-time" data-role="current">0:00</span>
+          <input type="range" class="video-review-seek" min="0" max="0" step="0.1" value="0" aria-label="Seek video review from ${v.name}">
+          <span class="video-review-time" data-role="duration">0:00</span>
         </div>
       </div>
     `).join("");
@@ -225,14 +230,52 @@
       }
     }
 
+    function formatTime(seconds) {
+      if (!isFinite(seconds) || seconds < 0) return "0:00";
+      const m = Math.floor(seconds / 60);
+      const s = Math.floor(seconds % 60);
+      return `${m}:${String(s).padStart(2, "0")}`;
+    }
+
+    // Fills the seek bar's track up to the current position — native
+    // range inputs don't show progress on their own, so this paints it
+    // with a background gradient split at the current percentage.
+    function paintSeekFill(seek, pct) {
+      seek.style.background = `linear-gradient(to right, #fff ${pct}%, rgba(255,255,255,0.3) ${pct}%)`;
+    }
+
     videoCards.forEach(card => {
       const vid = card.querySelector("video");
       if (!vid) return;
+      const seek = card.querySelector(".video-review-seek");
+      const currentTimeEl = card.querySelector('[data-role="current"]');
+      const durationEl = card.querySelector('[data-role="duration"]');
+
       vid.volume = VIDEO_REVIEW_DEFAULT_VOLUME;
       vid.addEventListener("play", () => syncPlayButton(card, vid));
       vid.addEventListener("pause", () => syncPlayButton(card, vid));
       vid.addEventListener("ended", () => syncPlayButton(card, vid)); // no loop: it just stops here
       vid.addEventListener("click", () => toggleUserPlayback(vid));
+
+      vid.addEventListener("loadedmetadata", () => {
+        seek.max = vid.duration;
+        durationEl.textContent = formatTime(vid.duration);
+      });
+      vid.addEventListener("timeupdate", () => {
+        if (vid.dataset.scrubbing) return; // don't fight the user's drag
+        seek.value = vid.currentTime;
+        currentTimeEl.textContent = formatTime(vid.currentTime);
+        paintSeekFill(seek, vid.duration ? (vid.currentTime / vid.duration) * 100 : 0);
+      });
+
+      seek.addEventListener("pointerdown", () => { vid.dataset.scrubbing = "true"; });
+      seek.addEventListener("pointerup", () => { vid.dataset.scrubbing = ""; });
+      seek.addEventListener("input", () => {
+        const value = Number(seek.value);
+        vid.currentTime = value;
+        currentTimeEl.textContent = formatTime(value);
+        paintSeekFill(seek, vid.duration ? (value / vid.duration) * 100 : 0);
+      });
     });
 
     // Lazy-load: the real video src loads only once a card nears the
