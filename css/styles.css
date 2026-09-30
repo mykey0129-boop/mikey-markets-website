@@ -396,7 +396,6 @@ p{ margin: 0 0 var(--space-4); color: var(--ink-soft); }
   width: max-content;
   animation: marquee 32s linear infinite;
 }
-.marquee-track:hover{ animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce){ .marquee-track{ animation: none; } }
 @keyframes marquee{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
 .tool-chip{
