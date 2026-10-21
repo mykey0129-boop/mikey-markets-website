@@ -688,17 +688,23 @@
   }
 
   /* ============================================================
-     Loom "coming soon" video placeholder
+     Lazy-load the Loom walkthrough — the iframe only loads once a
+     visitor scrolls near it, same reasoning as the GHL calendars.
      ============================================================ */
-  const playLoom = document.getElementById("playLoom");
-  if (playLoom) {
-    playLoom.addEventListener("click", () => {
-      const badge = playLoom.querySelector(".coming-soon-badge");
-      if (!badge) return;
-      const original = badge.textContent;
-      badge.textContent = "Recording in progress — check back soon";
-      setTimeout(() => { badge.textContent = original; }, 2600);
-    });
+  const loomFrame = document.getElementById("loomFrame");
+  if (loomFrame) {
+    if ("IntersectionObserver" in window) {
+      const loomIO = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          loomFrame.src = loomFrame.dataset.src;
+          loomIO.unobserve(loomFrame);
+        });
+      }, { rootMargin: "300px" });
+      loomIO.observe(loomFrame);
+    } else {
+      loomFrame.src = loomFrame.dataset.src;
+    }
   }
 
   /* ============================================================

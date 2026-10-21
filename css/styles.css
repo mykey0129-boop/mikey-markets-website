@@ -694,7 +694,7 @@ p{ margin: 0 0 var(--space-4); color: var(--ink-soft); }
 .process-thumbs img:first-child{ margin-left: 0; }
 
 /* ---------- Loom / video ---------- */
-.video-card{
+.loom-embed{
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -702,25 +702,7 @@ p{ margin: 0 0 var(--space-4); color: var(--ink-soft); }
   aspect-ratio: 16/9;
   background: var(--ink);
 }
-.video-card img{ width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
-.video-card .play-btn{
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  flex-direction: column; gap: var(--space-3);
-  background: linear-gradient(180deg, rgba(27,23,19,0.15), rgba(27,23,19,0.6));
-  border: none; width: 100%; height: 100%; cursor: pointer; color: #fff;
-}
-.play-circle{
-  width: 78px; height: 78px; border-radius: 50%;
-  background: var(--accent); display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 0 10px rgba(226,117,61,0.22);
-  transition: transform .25s var(--ease-out);
-}
-.video-card:hover .play-circle{ transform: scale(1.08); }
-.coming-soon-badge{
-  font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;
-  background: rgba(255,255,255,0.14); padding: 6px 14px; border-radius: var(--radius-pill);
-}
+.loom-embed iframe{ position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
 
 /* ---------- Video reviews ---------- */
 .video-review-grid{
