@@ -9,6 +9,7 @@
   const caseStudies = [
     {
       slug: "barbershop",
+      liveUrl: "https://keenbarbers.mikey.markets/home",
       tag: "Barbershop & Grooming",
       title: "Automated Booking System",
       teaser: "First click to loyal repeat customer, with zero manual follow-up in between.",
@@ -23,6 +24,7 @@
     },
     {
       slug: "hvac",
+      liveUrl: "https://apexhome.mikey.markets/home",
       tag: "HVAC & Home Services",
       title: "End-to-End Job Pipeline",
       teaser: "From form submission to a completed job and a membership upsell — automatically.",
@@ -37,6 +39,7 @@
     },
     {
       slug: "landscaping",
+      liveUrl: "https://canopylandscaping.mikey.markets/home",
       tag: "Landscaping & Outdoor Services",
       title: "Quote-to-Cash Automation",
       teaser: "Warm leads stay warm, and cancellations get rebooked instead of lost.",
@@ -51,6 +54,7 @@
     },
     {
       slug: "psych-clinic",
+      liveUrl: "https://psychclinic.mikey.markets/home",
       tag: "Mental Health & Therapy",
       title: "Intake & Care Pipeline",
       teaser: "A sensitive, multi-branch intake flow that never feels automated.",
@@ -65,6 +69,7 @@
     },
     {
       slug: "med-spa",
+      liveUrl: "https://aureliaspa.mikey.markets/home",
       tag: "Med Spa & Aesthetics",
       title: "Consultation-to-Loyalty Pipeline",
       teaser: "Filters serious consultations from tire-kickers and nurtures clients long-term.",
@@ -344,19 +349,24 @@
   const caseGrid = document.getElementById("caseGrid");
   if (caseGrid) {
     caseGrid.innerHTML = caseStudies.map(cs => `
-      <button class="case-card reveal" type="button" data-case="${cs.slug}" aria-haspopup="dialog">
-        <div class="case-thumb">
-          <img src="${imgPath(cs.slug, cs.cardImage)}" alt="${cs.tag} website preview" loading="lazy">
-        </div>
-        <div class="case-body">
-          <span class="case-tag">${cs.tag}</span>
-          <h3>${cs.title}</h3>
-          <p>${cs.teaser}</p>
-          <span class="case-link">View Case Study
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </span>
-        </div>
-      </button>
+      <div class="case-card reveal">
+        <button class="case-card-open" type="button" data-case="${cs.slug}" aria-haspopup="dialog">
+          <div class="case-thumb">
+            <img src="${imgPath(cs.slug, cs.cardImage)}" alt="${cs.tag} website preview" loading="lazy">
+          </div>
+          <div class="case-body">
+            <span class="case-tag">${cs.tag}</span>
+            <h3>${cs.title}</h3>
+            <p>${cs.teaser}</p>
+            <span class="case-link">View Case Study
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </div>
+        </button>
+        <a class="btn btn-ghost case-live-link" href="${cs.liveUrl}" target="_blank" rel="noopener" aria-label="Visit Live Website: ${cs.tag} (opens in a new tab)">Visit Live Website
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+        </a>
+      </div>
     `).join("") + `
       <a href="#book-final" class="case-card case-cta-card reveal">
         <div class="case-cta-icon">
@@ -405,6 +415,7 @@
   const caseModalTag = document.getElementById("caseModalTag");
   const caseModalTitle = document.getElementById("caseModalTitle");
   const caseModalSubhead = document.getElementById("caseModalSubhead");
+  const caseModalLive = document.getElementById("caseModalLive");
   const caseModalProblem = document.getElementById("caseModalProblem");
   const caseModalSolution = document.getElementById("caseModalSolution");
   const caseModalMainImg = document.getElementById("caseModalMainImg");
@@ -511,6 +522,8 @@
     caseModalTag.textContent = cs.tag;
     caseModalTitle.textContent = cs.headline;
     caseModalSubhead.textContent = cs.subhead;
+    caseModalLive.href = cs.liveUrl;
+    caseModalLive.setAttribute("aria-label", `Visit Live Website: ${cs.tag} (opens in a new tab)`);
     caseModalProblem.textContent = cs.problem;
     caseModalSolution.textContent = cs.solution;
 
