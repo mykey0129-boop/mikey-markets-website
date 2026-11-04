@@ -358,7 +358,7 @@
             <span class="case-tag">${cs.tag}</span>
             <h3>${cs.title}</h3>
             <p>${cs.teaser}</p>
-            <span class="case-link">View Case Study
+            <span class="case-link">More details
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </span>
           </div>
